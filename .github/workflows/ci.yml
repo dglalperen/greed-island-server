@@ -1,0 +1,29 @@
+name: CI
+
+# When this runs:
+#  - on every push to main (so main is always verified)
+#  - on every pull request targeting main (so we know BEFORE merging)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest   # GitHub's Linux runner. It has Docker preinstalled,
+                             # so Testcontainers can start Postgres for the context test.
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle        # caches downloaded dependencies between runs = faster CI
+
+      - name: Run the build (compiles + runs all tests)
+        run: ./gradlew build --no-daemon
