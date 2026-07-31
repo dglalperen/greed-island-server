@@ -1,0 +1,106 @@
+### Greed Island — cast attempts
+# Run each request with the green ▶ gutter arrow in IntelliJ.
+# App must be running (TestGreedIslandServerApplication) on :8080.
+
+@host = http://localhost:8080
+
+### 1. Success, no vow — Gon (Enhancer, 500) punches with Jajanken: Rock (60)
+# expect: Success, auraSpent 60
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "gon",
+  "hatsuId": "jajanken-rock",
+  "currentHour": 12
+}
+
+### 2. Success via LifeStake — Gon casts First Comes Rock (250 - 200 discount)
+# expect: Success, auraSpent 50
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "gon",
+  "hatsuId": "first-comes-rock",
+  "currentHour": 12
+}
+
+### 3. Target vow SATISFIED — Kurapika chains a Troupe member (chrollo)
+# expect: Success, auraSpent 125 (200 - 75)
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "kurapika",
+  "hatsuId": "chain-jail",
+  "currentHour": 12,
+  "targetId": "chrollo"
+}
+
+### 4. Target vow BROKEN — Kurapika aims Chain Jail at a non-Troupe target (gon)
+# expect: VowConditionsNotMet
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "kurapika",
+  "hatsuId": "chain-jail",
+  "currentHour": 12,
+  "targetId": "gon"
+}
+
+### 5. Time vow SATISFIED — Killua casts Moonlit Edge at 22:00 (window 20-04)
+# expect: Success, auraSpent 140 (180 - 40)
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "killua",
+  "hatsuId": "moonlit-edge",
+  "currentHour": 22
+}
+
+### 6. Time vow BROKEN — same ability at noon
+# expect: VowConditionsNotMet
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "killua",
+  "hatsuId": "moonlit-edge",
+  "currentHour": 12
+}
+
+### 7. Specialization wall — Gon (Enhancer) tries a Specialization ability
+# expect: NotEnoughAura, required = Infinity
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "gon",
+  "hatsuId": "final-gambit",
+  "currentHour": 1
+}
+
+### 8. Double vow, right caster — Chrollo (Specialist) casts Final Gambit at 01:00
+# expect: Success (Specialist can cast it; time + life-stake discounts apply)
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "chrollo",
+  "hatsuId": "final-gambit",
+  "currentHour": 1
+}
+
+### 9. Unknown user — no such id in the store
+# expect: error (NoSuchElementException surfaces as HTTP 500 for now)
+POST {{host}}/casts/attempt
+Content-Type: application/json
+
+{
+  "userId": "ging",
+  "hatsuId": "jajanken-rock",
+  "currentHour": 12
+}

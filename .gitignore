@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Scratch PR descriptions (local only) ###
+PR_*.md
