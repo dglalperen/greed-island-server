@@ -12,7 +12,7 @@ class NenUser(val id: String, val category: NenCategory, var auraCapacity: Doubl
      * Pure decision — it does NOT spend aura; the caller applies [CastResult.Success.auraSpent].
      */
     fun attemptCast(hatsu: Hatsu, context: CastContext): CastResult {
-        val unsatisfied = hatsu.vows.filter { !it.isSatisfied(context) }
+        val unsatisfied = hatsu.vows.filter { vow -> !vow.isSatisfied(context) }
         if (unsatisfied.isNotEmpty()) {
             return CastResult.VowConditionsNotMet(unsatisfied)
         }
