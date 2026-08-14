@@ -1,5 +1,6 @@
 package com.greedisland.greedislandserver.nen.domain
 
+import com.greedisland.greedislandserver.nen.domain.cast.CastContext
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

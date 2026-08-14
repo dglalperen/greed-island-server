@@ -1,5 +1,7 @@
 package com.greedisland.greedislandserver.nen.domain
 
+import com.greedisland.greedislandserver.nen.domain.cast.CastContext
+
 /** Aura freed per hour the ability is *not* usable — harsher restriction, bigger payoff. */
 private const val DISCOUNT_PER_RESTRICTED_HOUR: Double = 2.5
 

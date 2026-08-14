@@ -1,4 +1,6 @@
-package com.greedisland.greedislandserver.nen.domain
+package com.greedisland.greedislandserver.nen.domain.cast
+
+import com.greedisland.greedislandserver.nen.domain.Vow
 
 /**
  * The authoritative outcome of attempting to cast a Hatsu.

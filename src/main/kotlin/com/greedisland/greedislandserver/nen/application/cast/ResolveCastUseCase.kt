@@ -1,9 +1,10 @@
-package com.greedisland.greedislandserver.nen.application
+package com.greedisland.greedislandserver.nen.application.cast
 
-import com.greedisland.greedislandserver.nen.domain.CastContext
+import com.greedisland.greedislandserver.nen.application.HatsuRepository
+import com.greedisland.greedislandserver.nen.application.NenUserRepository
+import com.greedisland.greedislandserver.nen.domain.cast.CastContext
+import com.greedisland.greedislandserver.nen.domain.cast.CastResult
 import org.springframework.stereotype.Service
-import com.greedisland.greedislandserver.nen.domain.CastResult
-
 
 data class ResolveCastCommand(
     val userId: String,

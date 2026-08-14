@@ -1,5 +1,8 @@
 package com.greedisland.greedislandserver.nen.domain
 
+import com.greedisland.greedislandserver.nen.domain.cast.CastContext
+import com.greedisland.greedislandserver.nen.domain.cast.CastResult
+
 class NenUser(val id: String, val category: NenCategory, var auraCapacity: Double) {
 
     fun canCast(hatsu: Hatsu): Boolean =

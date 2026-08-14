@@ -36,8 +36,19 @@ game fair and abuse-resistant no matter how creative a player's phrasing is.
 
 ## Architecture
 
-Feature-first, clean architecture. Each feature (starting with `nen`) is split into
-three layers, with dependencies pointing inward:
+Feature-first, clean architecture. The codebase grows **outward** — one package per
+feature — rather than downward into deep folders:
+
+```
+com.greedisland/
+├── nen/       the Nen system   (domain, application, infrastructure)
+├── player/    (planned)
+├── card/      (planned)
+└── world/     (planned)
+```
+
+Each feature is split into three layers, with dependencies pointing **inward**
+(infrastructure → application → domain; the domain depends on nothing):
 
 ```
 nen/
@@ -46,11 +57,22 @@ nen/
 └── infrastructure  the outside world — REST controllers, persistence
 ```
 
+Within a layer, files are grouped by concept once a concept has enough of them (rule of
+three). The first such group is `cast/`, spanning all three layers:
+
+```
+nen/
+├── domain/cast           CastContext, CastResult
+├── application/cast      ResolveCastUseCase, ResolveCastCommand
+└── infrastructure/cast   CastController, CastResponse (+ mapper)
+```
+
 - **domain** — `NenCategory`, `Hatsu`, `Vow` (a sealed hierarchy), `NenUser`, and the
   authoritative `attemptCast` decision returning a sealed `CastResult`. No Spring here.
 - **application** — use cases such as `ResolveCastUseCase`, depending only on repository
   *interfaces* it defines. It knows nothing about HTTP or SQL.
-- **infrastructure** — implements those interfaces and exposes them over HTTP.
+- **infrastructure** — implements those interfaces, exposes them over HTTP, and maps the
+  domain's `CastResult` to a `CastResponse` DTO so the wire format stays out of the core.
 
 ## Status
 
